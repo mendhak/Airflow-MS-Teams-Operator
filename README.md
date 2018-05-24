@@ -54,3 +54,18 @@ You can now use the MSTeamsWebHookOperator.  The `message` and `subtitle` fields
         dag=dag)
 
 The `theme_color` is a hex color without the #
+
+
+## Contribute
+
+Any feature requests, please fork and submit a PR. 
+
+### Wishlist
+
+Ability to create potentialActions as seen here:
+
+https://docs.microsoft.com/en-us/outlook/actionable-messages/actionable-messages-via-connectors
+
+## License
+
+Apache 2.0 (see code file headers) 
