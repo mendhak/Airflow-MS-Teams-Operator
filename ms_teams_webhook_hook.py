@@ -17,10 +17,8 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-import json
 from airflow.hooks.http_hook import HttpHook
 from airflow.exceptions import AirflowException
-
 
 
 class MSTeamsWebhookHook(HttpHook):
@@ -30,7 +28,7 @@ class MSTeamsWebhookHook(HttpHook):
     Takes both MS Teams webhook token directly and connection that has MS Teams webhook token.
     If both supplied, the webhook token will be appended to the host in the connection.
 
-    :param http_conn_id: connection that has MS Teams webhook URL 
+    :param http_conn_id: connection that has MS Teams webhook URL
     :type http_conn_id: str
     :param webhook_token: MS Teams webhook token
     :type webhook_token: str
@@ -38,17 +36,23 @@ class MSTeamsWebhookHook(HttpHook):
     :type message: str
     :param subtitle: The subtitle of the message to send
     :type subtitle: str
+    :param button_text: The text of the action button
+    :type button_text: str
+    :param button_url: The URL for the action button click
+    :type button_url : str
     :param theme_color: Hex code of the card theme, without the #
     :type message: str
     :param proxy: Proxy to use when making the webhook request
     :type proxy: str
-    
+
     """
     def __init__(self,
-                http_conn_id=None,
+                 http_conn_id=None,
                  webhook_token=None,
                  message="",
                  subtitle="",
+                 button_text="",
+                 button_url="",
                  theme_color="00FF00",
                  proxy=None,
                  *args,
@@ -59,9 +63,16 @@ class MSTeamsWebhookHook(HttpHook):
         self.webhook_token = self.get_token(webhook_token, http_conn_id)
         self.message = message
         self.subtitle = subtitle
+        self.button_text = button_text
+        self.button_url = button_url
         self.theme_color = theme_color
         self.proxy = proxy
 
+    def get_proxy(self, http_conn_id):
+        conn = self.get_connection(http_conn_id)
+        extra = conn.extra_dejson
+        print(extra)
+        return extra.get("proxy", '')
 
     def get_token(self, token, http_conn_id):
         """
@@ -90,12 +101,21 @@ class MSTeamsWebhookHook(HttpHook):
             "sections": [{{
                 "activityTitle": "{1}",
                 "activitySubtitle": "{2}",
-                "markdown": true
-            }}]   
+                "markdown": true,
+                "potentialAction": [
+                    {{
+                        "@type": "OpenUri",
+                        "name": "{4}",
+                        "targets": [
+                            {{ "os": "default", "uri": "{5}" }}
+                        ]
+                    }}
+                ]
+            }}]
             }}
                 """
-        return cardjson.format(self.message, self.message, self.subtitle, self.theme_color)
-
+        return cardjson.format(self.message, self.message, self.subtitle, self.theme_color,
+                               self.button_text, self.button_url)
 
     def execute(self):
         """
@@ -105,9 +125,11 @@ class MSTeamsWebhookHook(HttpHook):
         :param kwargs: extra arguments to Popen (see subprocess.Popen)
         """
         proxies = {}
-        if self.proxy:
-            proxies = {'https': self.proxy}
-        
+        proxy_url = self.get_proxy(self.http_conn_id)
+        print("Proxy is : " + proxy_url)
+        if len(proxy_url) > 5:
+            proxies = {'https': proxy_url}
+
         self.run(endpoint=self.webhook_token,
                  data=self.build_message(),
                  headers={'Content-type': 'application/json'},

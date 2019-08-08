@@ -7,6 +7,8 @@ Example:
         http_conn_id='msteams_webhook_url',
         message = "Hello from Airflow!",
         subtitle = "This is the **subtitle**",
+        button_text = "My button",
+        button_url = "https://example.com",
         theme_color = "00FF00",
         #proxy = "https://yourproxy.domain:3128/",
         dag=dag)
