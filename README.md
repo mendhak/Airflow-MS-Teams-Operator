@@ -19,7 +19,7 @@ Results in:
 ![example](example.png)        
 
 
-## Usage
+## Usage and Setup (Airflow, MS Teams)
 
 For setup and usage instructions see [the writeup here](https://code.mendhak.com/Airflow-MS-Teams-Operator/)
 
