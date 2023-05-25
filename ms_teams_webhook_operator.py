@@ -75,7 +75,7 @@ class MSTeamsWebhookOperator(SimpleHttpOperator):
 
     def execute(self, context):
         """
-        Call the SparkSqlHook to run the provided sql query
+        Call the webhook with the required parameters
         """
         self.hook = MSTeamsWebhookHook(
             self.http_conn_id,
