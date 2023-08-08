@@ -19,7 +19,7 @@
 #
 from airflow.providers.http.hooks.http import HttpHook
 from airflow.exceptions import AirflowException
-
+import json
 
 class MSTeamsWebhookHook(HttpHook):
     """
@@ -92,30 +92,27 @@ class MSTeamsWebhookHook(HttpHook):
                                    'webhook URL nor conn_id supplied')
 
     def build_message(self):
-        cardjson = """
-                {{
-            "@type": "MessageCard",
-            "@context": "http://schema.org/extensions",
-            "themeColor": "{3}",
-            "summary": "{0}",
-            "sections": [{{
-                "activityTitle": "{1}",
-                "activitySubtitle": "{2}",
-                "markdown": true,
-                "potentialAction": [
-                    {{
-                        "@type": "OpenUri",
-                        "name": "{4}",
-                        "targets": [
-                            {{ "os": "default", "uri": "{5}" }}
-                        ]
-                    }}
-                ]
-            }}]
-            }}
-                """
-        return cardjson.format(self.message, self.message, self.subtitle, self.theme_color,
-                               self.button_text, self.button_url)
+        cardjson = {
+            '@type': 'MessageCard',
+            '@context': 'http://schema.org/extensions',
+            'themeColor': self.theme_color,
+            'summary': self.message,
+            'sections': [
+                {
+                    'activityTitle': self.message,
+                    'activitySubtitle': self.subtitle,
+                    'markdown': 'true',
+                    'potentialAction': [
+                        {
+                            '@type': 'OpenUri',
+                            'name': self.button_text,
+                            'targets': [{'os': 'default', 'uri': self.button_url}],
+                        }
+                    ],
+                }
+            ],
+        }
+        return json.dumps(cardjson)
 
     def execute(self):
         """
