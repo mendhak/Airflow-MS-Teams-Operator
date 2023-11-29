@@ -17,13 +17,14 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.http.hooks.http import HttpHook
+from airflow.providers.http.operators.http import HttpOperator
 from airflow.utils.decorators import apply_defaults
 from ms_teams_webhook_hook import MSTeamsWebhookHook
 import logging
 
 
-class MSTeamsWebhookOperator(SimpleHttpOperator):
+class MSTeamsWebhookOperator(HttpOperator):
     """
     This operator allows you to post messages to MS Teams using the Incoming Webhooks connector.
     Takes both MS Teams webhook token directly and connection that has MS Teams webhook token.
@@ -71,13 +72,10 @@ class MSTeamsWebhookOperator(SimpleHttpOperator):
         self.button_url = button_url
         self.theme_color = theme_color
         self.proxy = proxy
-        self.hook = None
 
-    def execute(self, context):
-        """
-        Call the webhook with the required parameters
-        """
-        self.hook = MSTeamsWebhookHook(
+    @property
+    def hook(self) -> MSTeamsWebhookHook:
+        return MSTeamsWebhookHook(
             self.http_conn_id,
             self.webhook_token,
             self.message,
@@ -87,5 +85,10 @@ class MSTeamsWebhookOperator(SimpleHttpOperator):
             self.theme_color,
             self.proxy
         )
+
+    def execute(self, context):
+        """
+        Call the webhook with the required parameters
+        """
         self.hook.execute()
         logging.info("Webhook request sent to MS Teams")
