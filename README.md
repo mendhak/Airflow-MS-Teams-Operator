@@ -24,6 +24,39 @@ Results in:
 For setup and usage instructions see [the writeup here](https://code.mendhak.com/Airflow-MS-Teams-Operator/)
 
 
+## Testing this plugin locally for development
+
+I've taken the docker compose yml from [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), and made these changes:
+
+
+```
+extra_hosts:
+  - "host.docker.internal:host-gateway"
+environment:
+  AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+```
+
+
+Run this to prepare the environment:
+
+```
+mkdir -p ./dags ./logs ./plugins ./config
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+docker compose up airflow-init
+docker compose up
+```
+
+Then open http://localhost:8080 with airflow:airflow
+
+To troubleshoot the requests going out, use the httpecho container:
+
+```
+docker compose up -f docker-compose.httpecho.yml
+```
+
+In Airflow connections, create a request to http://httpecho:8081
+
+
 ## Contribute
 
 Any feature requests, please fork and submit a PR. 
