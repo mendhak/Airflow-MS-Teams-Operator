@@ -26,16 +26,7 @@ For setup and usage instructions see [the writeup here](https://code.mendhak.com
 
 ## Testing this plugin locally for development
 
-I've taken the docker compose yml from [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), and made these changes:
-
-
-```
-extra_hosts:
-  - "host.docker.internal:host-gateway"
-environment:
-  AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-```
-
+I've taken the docker compose yml from [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), with a few changes. Load examples is false and added an extra_hosts.
 
 Run this to prepare the environment:
 
@@ -48,13 +39,14 @@ docker compose up
 
 Then open http://localhost:8080 with airflow:airflow
 
-To troubleshoot the requests going out, use the httpecho container:
+To troubleshoot the requests going out, use the included httpecho container.  
+In Airflow connections, create an HTTP Connection to http://httpecho:8081. 
 
 ```
-docker compose up -f docker-compose.httpecho.yml
+docker compose logs -f httpecho
 ```
 
-In Airflow connections, create a request to http://httpecho:8081
+
 
 
 ## Contribute
