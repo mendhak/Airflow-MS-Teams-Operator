@@ -37,27 +37,29 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type card_width_full: bool
     :param heading_show_header: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
     :type heading_show_header: bool
-    :param heading_message: The title of the card
-    :type heading_message: str
-    :param heading_message_size: The size of the heading_message, defaults to large. Options are default, small, medium, large, extraLarge. 
-    :param heading_subtitle: The subtitle of the card, just below the heading_message
+    :param heading_style: The style hint for the heading: `default`, `emphasis`, `good`, `attention`, `warning`, `accent`.
+    :type heading_style: str
+    :param heading_title: The title of the card
+    :type heading_title: str
+    :param heading_title_size: The size of the heading_title: `default`, `small`, `medium`, `large`, `extraLarge`. 
+    :param heading_subtitle: The subtitle of the card, just below the heading_title
     :type heading_subtitle: str
-    :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)\
+    :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)
     :param heading_show_logo: Whether to show the Airflow logo in the card
     :type heading_show_logo: bool
     :param body_message: The main message of the card
     :type body_message: str
-    :param body_message_color_type: The color 'type' of the body message: default, dark, light, accent, good, warning, attention. 
+    :param body_message_color_type: The color 'type' of the body message: `default`, `dark`, `light`, `accent`, `good`, `warning`, `attention`. 
     :param button_text: The text of the action button, defaults to View Logs
     :type button_text: str
     :param button_url: The URL for the action button click
     :type button_url: str
-    :param button_style: The action style of the button. default, positive, destructive
+    :param button_style: The action style of the button: `default`, `positive`, `destructive`
     :param button_show: Whether to show the action button
     :type button_show: bool
     """
 
-    template_fields = ("heading_message", "heading_subtitle", "body_message")
+    template_fields = ("heading_title", "heading_subtitle", "body_message")
 
     @apply_defaults
     def __init__(
@@ -65,8 +67,9 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         http_conn_id=None,
         card_width_full=True,
         heading_show_header=True,
-        heading_message=None,
-        heading_message_size="large",
+        heading_style="default",
+        heading_title=None,
+        heading_title_size="large",
         heading_subtitle=None,
         heading_subtitle_subtle=True,
         heading_show_logo=True,
@@ -84,9 +87,11 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.http_conn_id = http_conn_id
 
         self.card_width_full = card_width_full
+
         self.heading_show_header = heading_show_header
-        self.heading_message = heading_message
-        self.heading_message_size = heading_message_size
+        self.heading_style = heading_style
+        self.heading_title = heading_title
+        self.heading_title_size = heading_title_size
         self.heading_subtitle = heading_subtitle
         self.heading_subtitle_subtle = heading_subtitle_subtle
         self.heading_show_logo = heading_show_logo
@@ -114,7 +119,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                             {
                                 "type": "Container",
                                 "isVisible": self.heading_show_header,
-                                "style": "good",
+                                "style": self.heading_style,
                                 "bleed": True,
                                 "minHeight": "15px",
                                 "spacing": "None",
@@ -142,12 +147,12 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                 "items": [
                                                     {
                                                         "type": "TextBlock",
-                                                        "text": self.heading_message,
+                                                        "text": self.heading_title,
                                                         "weight": "bolder",
-                                                        "size": self.heading_message_size,
+                                                        "size": self.heading_title_size,
                                                         "wrap": True,
                                                         "style": "heading",
-                                                        "isVisible": self.heading_message is not None
+                                                        "isVisible": self.heading_title is not None
                                                     },
                                                     {
                                                         "type": "TextBlock",
