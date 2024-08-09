@@ -37,7 +37,9 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type heading_message: str
     :param heading_subtitle: The subtitle of the card, just below the heading_message
     :type heading_subtitle: str
-    :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)
+    :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)\
+    :param heading_show_logo: Whether to show the Airflow logo in the card
+    :type heading_show_logo: bool
     :param body_message: The main message of the card
     :type body_message: str
     :param button_text: The text of the action button, defaults to View Logs
@@ -54,6 +56,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                  heading_message=None,
                  heading_subtitle=None,
                  heading_subtitle_subtle=True,
+                 heading_show_logo=True,
                  body_message="",
                  button_text="View Logs",
                  button_url="https://example.com",
@@ -66,6 +69,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.heading_message = heading_message
         self.heading_subtitle = heading_subtitle
         self.heading_subtitle_subtle = heading_subtitle_subtle
+        self.heading_show_logo = heading_show_logo
         self.body_message = body_message
         self.button_text = button_text
         self.button_url = button_url
@@ -89,6 +93,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                 "type": "Container",
                                 "style": "good",
                                 "bleed": True,
+                                "minHeight": "25px",
                                 "spacing": "None",
                                 "items": [
                                     {
@@ -154,6 +159,9 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                 }
             ],
         }
+
+        if not self.heading_show_logo:
+            del cardjson["attachments"][0]["content"]["body"][0]["items"][0]["columns"][0]
 
         cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
 
