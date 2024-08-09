@@ -135,6 +135,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "weight": "bolder",
                                                         "size": self.heading_message_size,
                                                         "wrap": True,
+                                                        "style": "heading"
                                                     },
                                                     {
                                                         "type": "TextBlock",
