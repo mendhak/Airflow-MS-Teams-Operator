@@ -50,7 +50,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :param body_message: The main message of the card
     :type body_message: str
     :param body_message_color_type: The color 'type' of the body message: `default`, `dark`, `light`, `accent`, `good`, `warning`, `attention`. 
-    :param button_text: The text of the action button, defaults to View Logs
+    :param button_text: The text of the action button
     :type button_text: str
     :param button_url: The URL for the action button click
     :type button_url: str
@@ -75,7 +75,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         heading_show_logo=True,
         body_message="",
         body_message_color_type="default",
-        button_text="View Logs",
+        button_text=None,
         button_url="https://example.com",
         button_style="default",
         button_show=True,
@@ -118,7 +118,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                         "body": [
                             {
                                 "type": "Container",
-                                "isVisible": self.header_bar_show,
+                                "isVisible": self.header_bar_show and self.heading_title is not None,
                                 "style": self.header_bar_style,
                                 "bleed": True,
                                 "minHeight": "15px",
@@ -197,7 +197,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         if self.card_width_full:
             cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
 
-        if not self.button_show:
+        if not self.button_show or not self.button_text:
             del cardjson["attachments"][0]["content"]["actions"][0]
 
 
