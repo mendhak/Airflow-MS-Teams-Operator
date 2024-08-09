@@ -35,10 +35,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
     :param card_width_full: Whether to show the card in full width. If false, the card will be the MSTeams default
     :type card_width_full: bool
-    :param heading_show_header: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
-    :type heading_show_header: bool
-    :param heading_style: The style hint for the heading: `default`, `emphasis`, `good`, `attention`, `warning`, `accent`.
-    :type heading_style: str
+    :param header_bar_show: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
+    :type header_bar_show: bool
+    :param header_bar_style: The style hint for the header bar: `default`, `emphasis`, `good`, `attention`, `warning`, `accent`.
+    :type header_bar_style: str
     :param heading_title: The title of the card
     :type heading_title: str
     :param heading_title_size: The size of the heading_title: `default`, `small`, `medium`, `large`, `extraLarge`. 
@@ -66,8 +66,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self,
         http_conn_id=None,
         card_width_full=True,
-        heading_show_header=True,
-        heading_style="default",
+        header_bar_show=True,
+        header_bar_style="default",
         heading_title=None,
         heading_title_size="large",
         heading_subtitle=None,
@@ -88,8 +88,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
         self.card_width_full = card_width_full
 
-        self.heading_show_header = heading_show_header
-        self.heading_style = heading_style
+        self.header_bar_show = header_bar_show
+        self.header_bar_style = header_bar_style
         self.heading_title = heading_title
         self.heading_title_size = heading_title_size
         self.heading_subtitle = heading_subtitle
@@ -118,8 +118,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                         "body": [
                             {
                                 "type": "Container",
-                                "isVisible": self.heading_show_header,
-                                "style": self.heading_style,
+                                "isVisible": self.header_bar_show,
+                                "style": self.header_bar_style,
                                 "bleed": True,
                                 "minHeight": "15px",
                                 "spacing": "None",
