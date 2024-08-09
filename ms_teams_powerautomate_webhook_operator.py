@@ -35,7 +35,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
     :param card_width_full: Whether to show the card in full width. If false, the card will be the MSTeams default
     :type card_width_full: bool
-    :param header_bar_show: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
+    :param header_bar_show: Whether to show the header in the card. If false, heading title, subtitle, logo won't be shown. 
     :type header_bar_show: bool
     :param header_bar_style: The style hint for the header bar: `default`, `emphasis`, `good`, `attention`, `warning`, `accent`.
     :type header_bar_style: str
