@@ -25,6 +25,7 @@ def sample_dag():
         http_conn_id='msteams_webhook_url',
         heading_message="Airflow local test",
         heading_subtitle=formatted_date,
+        heading_subtitle_subtle=False,
         body_message="**lorem_ipsum** ran successfully in **localhost**",
         button_text="View logs",
         button_url="http://localhost:8080",

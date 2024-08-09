@@ -37,6 +37,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type heading_message: str
     :param heading_subtitle: The subtitle of the card, just below the heading_message
     :type heading_subtitle: str
+    :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)
     :param body_message: The main message of the card
     :type body_message: str
     :param button_text: The text of the action button, defaults to View Logs
@@ -52,6 +53,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                  http_conn_id=None,
                  heading_message=None,
                  heading_subtitle=None,
+                 heading_subtitle_subtle=True,
                  body_message="",
                  button_text="View Logs",
                  button_url="https://example.com",
@@ -63,6 +65,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
         self.heading_message = heading_message
         self.heading_subtitle = heading_subtitle
+        self.heading_subtitle_subtle = heading_subtitle_subtle
         self.body_message = body_message
         self.button_text = button_text
         self.button_url = button_url
@@ -119,7 +122,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "type": "TextBlock",
                                                         "spacing": "none",
                                                         "text": self.heading_subtitle,
-                                                        "isSubtle": True,
+                                                        "isSubtle": self.heading_subtitle_subtle,
                                                         "wrap": True,
                                                     },
                                                 ],
