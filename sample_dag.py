@@ -28,21 +28,35 @@ def sample_dag():
     op1 = MSTeamsPowerAutomateWebhookOperator(
         task_id="send_to_teams",
         http_conn_id="msteams_webhook_url",
-        card_width_full=True,
-        header_bar_show=True,
+        heading_title="Airflow local",
+        heading_title_size="extraLarge",
         header_bar_style="good",
-        heading_title="Message from Airflow Local",
-        heading_title_size="medium",
         heading_subtitle=formatted_date,
-        heading_subtitle_subtle=True,
-        heading_show_logo=True,
-        body_message="**lorem_ipsum** has completed successfully in **localhost**",
-        body_message_color_type="positive",
+        card_width_full=True,
+        body_message="""Dag **lorem_ipsum** has completed successfully in **localhost**""",
         button_text="View logs",
-        button_url="http://localhost:8080",
-        button_style="default",
-        button_show=True,
     )
+
+    formatted_date >> op1
+
+    # op1 = MSTeamsPowerAutomateWebhookOperator(
+    #     task_id="send_to_teams",
+    #     http_conn_id="msteams_webhook_url",
+    #     card_width_full=True,
+    #     header_bar_show=True,
+    #     header_bar_style="good",
+    #     heading_title="Message from Airflow Local",
+    #     heading_title_size="medium",
+    #     heading_subtitle=formatted_date,
+    #     heading_subtitle_subtle=True,
+    #     heading_show_logo=True,
+    #     body_message="**lorem_ipsum** has completed successfully in **localhost**",
+    #     body_message_color_type="positive",
+    #     button_text="View logs",
+    #     button_url="http://localhost:8080",
+    #     button_style="default",
+    #     button_show=True,
+    # )
 
 
 sample_dag()

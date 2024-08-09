@@ -1,17 +1,19 @@
 
-Airflow operator that can send messages to MS Teams
+Airflow operator that can send messages to MS Teams. It has a few options to customize the card.
 
 Example:
 
-    op1 = MSTeamsPowerAutomateWebhookOperator(task_id='msteamtest',
-        http_conn_id='msteams_webhook_url',
-        message = "Hello from Airflow!",
-        subtitle = "This is the **subtitle**",
-        button_text = "My button",
-        button_url = "https://example.com",
-        theme_color = "00FF00",
-        #proxy = "https://yourproxy.domain:3128/",
-        dag=dag)
+    op1 = MSTeamsPowerAutomateWebhookOperator(
+        task_id="send_to_teams",
+        http_conn_id="msteams_webhook_url",
+        header_bar_style="good",
+        heading_title="Message from Airflow Staging",
+        heading_subtitle="Everything went better than expected",
+        body_message="DAG **lorem_ipsum** has completed successfully in **localhost**",
+        body_message_color_type="positive",
+        button_text="View logs",
+        button_url="https://example.com",
+    )
 
 
 Results in:
