@@ -23,7 +23,7 @@ def sample_dag():
 
     op1 = MSTeamsPowerAutomateWebhookOperator(task_id='send_to_teams',
         http_conn_id='msteams_webhook_url',
-        card_width_full=False,
+        card_width_full=True,
         heading_show_header=True,
         heading_message="Message from Airflow Local",
         heading_message_size="default",
@@ -34,6 +34,7 @@ def sample_dag():
         body_message_color_type="accent",
         button_text="View logs",
         button_url="http://localhost:8080",
+        button_style="positive",
         button_show=True,
         )
 

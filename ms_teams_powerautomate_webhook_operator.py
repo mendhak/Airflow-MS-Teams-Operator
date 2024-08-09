@@ -52,6 +52,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type button_text: str
     :param button_url: The URL for the action button click
     :type button_url: str
+    :param button_style: The action style of the button. default, positive, destructive
     :param button_show: Whether to show the action button
     :type button_show: bool
     """
@@ -73,6 +74,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         body_message_color_type="default",
         button_text="View Logs",
         button_url="https://example.com",
+        button_style="default",
         button_show=True,
         *args,
         **kwargs
@@ -95,6 +97,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.button_text = button_text
         self.button_url = button_url
         self.button_show = button_show
+        self.button_style = button_style
 
     def build_message(self):
         cardjson = {
@@ -176,7 +179,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                             {
                                 "type": "Action.OpenUrl",
                                 "title": self.button_text,
-                                "url": self.button_url
+                                "url": self.button_url,
+                                "style": self.button_style,
                             }
                         ],
                     },
