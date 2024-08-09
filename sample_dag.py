@@ -31,6 +31,7 @@ def sample_dag():
         heading_subtitle_subtle=True,
         heading_show_logo=True,
         body_message="**lorem_ipsum** ran successfully in **localhost**",
+        body_message_color_type="accent",
         button_text="View logs",
         button_url="http://localhost:8080",
         )

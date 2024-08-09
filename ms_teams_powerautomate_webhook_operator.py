@@ -47,6 +47,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type heading_show_logo: bool
     :param body_message: The main message of the card
     :type body_message: str
+    :param body_message_color_type: The color 'type' of the body message: default, dark, light, accent, good, warning, attention. 
     :param button_text: The text of the action button, defaults to View Logs
     :type button_text: str
     :param button_url: The URL for the action button click
@@ -67,6 +68,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         heading_subtitle_subtle=True,
         heading_show_logo=True,
         body_message="",
+        body_message_color_type="default",
         button_text="View Logs",
         button_url="https://example.com",
         *args,
@@ -85,6 +87,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.heading_show_logo = heading_show_logo
 
         self.body_message = body_message
+        self.body_message_color_type = body_message_color_type
+        
         self.button_text = button_text
         self.button_url = button_url
 
@@ -157,7 +161,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                         "type": "TextBlock",
                                         "text": self.body_message,
                                         "wrap": True,
-                                        "color": "default",
+                                        "color": self.body_message_color_type,
                                     }
                                 ],
                             },
