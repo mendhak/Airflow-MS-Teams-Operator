@@ -33,6 +33,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :param http_conn_id: connection that has MS Teams webhook URL
     :type http_conn_id: str
 
+    :param heading_show_header: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
+    :type heading_show_header: bool
     :param heading_message: The title of the card
     :type heading_message: str
     :param heading_message_size: The size of the heading_message, defaults to large. Options are default, small, medium, large, extraLarge. 
@@ -49,21 +51,24 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type button_url: str
     """
 
-    template_fields = ('heading_message', 'heading_subtitle',  'body_message')
+    template_fields = ("heading_message", "heading_subtitle", "body_message")
 
     @apply_defaults
-    def __init__(self,
-                 http_conn_id=None,
-                 heading_message=None,
-                 heading_message_size="large",
-                 heading_subtitle=None,
-                 heading_subtitle_subtle=True,
-                 heading_show_logo=True,
-                 body_message="",
-                 button_text="View Logs",
-                 button_url="https://example.com",
-                 *args,
-                 **kwargs):
+    def __init__(
+        self,
+        http_conn_id=None,
+        heading_show_header=True,
+        heading_message=None,
+        heading_message_size="large",
+        heading_subtitle=None,
+        heading_subtitle_subtle=True,
+        heading_show_logo=True,
+        body_message="",
+        button_text="View Logs",
+        button_url="https://example.com",
+        *args,
+        **kwargs
+    ):
 
         super(MSTeamsPowerAutomateWebhookOperator, self).__init__(*args, **kwargs)
         self.http_conn_id = http_conn_id
@@ -73,12 +78,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.heading_subtitle = heading_subtitle
         self.heading_subtitle_subtle = heading_subtitle_subtle
         self.heading_show_logo = heading_show_logo
+        self.heading_show_header = heading_show_header
         self.body_message = body_message
         self.button_text = button_text
         self.button_url = button_url
-
-
-
 
     def build_message(self):
         cardjson = {
@@ -94,9 +97,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                         "body": [
                             {
                                 "type": "Container",
+                                "isVisible": self.heading_show_header,
                                 "style": "good",
                                 "bleed": True,
-                                "minHeight": "25px",
+                                "minHeight": "5px",
                                 "spacing": "None",
                                 "items": [
                                     {
@@ -112,6 +116,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "altText": "Airflow logo",
                                                         "size": "small",
                                                         "style": "default",
+                                                        "isVisible": self.heading_show_logo,
                                                     }
                                                 ],
                                             },
@@ -155,7 +160,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                             {
                                 "type": "Action.OpenUrl",
                                 "title": self.button_text,
-                                "url": self.button_url
+                                "url": self.button_url,
                             }
                         ],
                     },
@@ -163,13 +168,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
             ],
         }
 
-        if not self.heading_show_logo:
-            del cardjson["attachments"][0]["content"]["body"][0]["items"][0]["columns"][0]
 
         cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
 
         return json.dumps(cardjson)
-
 
     def execute(self, context):
         """

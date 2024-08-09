@@ -23,6 +23,7 @@ def sample_dag():
 
     op1 = MSTeamsPowerAutomateWebhookOperator(task_id='send_to_teams',
         http_conn_id='msteams_webhook_url',
+        heading_show_header=True,
         heading_message="Message from Airflow Local",
         heading_message_size="extraLarge",
         heading_subtitle=formatted_date,
