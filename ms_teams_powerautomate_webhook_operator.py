@@ -33,6 +33,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :param http_conn_id: connection that has MS Teams webhook URL
     :type http_conn_id: str
 
+    :param card_width_full: Whether to show the card in full width. If false, the card will be the MSTeams default
+    :type card_width_full: bool
     :param heading_show_header: Whether to show the header in the card. If false, heading message, subtitle, logo won't be shown. 
     :type heading_show_header: bool
     :param heading_message: The title of the card
@@ -57,6 +59,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     def __init__(
         self,
         http_conn_id=None,
+        card_width_full=True,
         heading_show_header=True,
         heading_message=None,
         heading_message_size="large",
@@ -73,12 +76,14 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         super(MSTeamsPowerAutomateWebhookOperator, self).__init__(*args, **kwargs)
         self.http_conn_id = http_conn_id
 
+        self.card_width_full = card_width_full
+        self.heading_show_header = heading_show_header
         self.heading_message = heading_message
         self.heading_message_size = heading_message_size
         self.heading_subtitle = heading_subtitle
         self.heading_subtitle_subtle = heading_subtitle_subtle
         self.heading_show_logo = heading_show_logo
-        self.heading_show_header = heading_show_header
+
         self.body_message = body_message
         self.button_text = button_text
         self.button_url = button_url
@@ -169,7 +174,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         }
 
 
-        cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
+        if self.card_width_full:
+            cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
 
         return json.dumps(cardjson)
 
