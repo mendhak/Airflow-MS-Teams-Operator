@@ -23,9 +23,10 @@ def sample_dag():
 
     op1 = MSTeamsPowerAutomateWebhookOperator(task_id='send_to_teams',
         http_conn_id='msteams_webhook_url',
-        heading_message=None,
-        heading_subtitle=None,
-        heading_subtitle_subtle=False,
+        heading_message="Message from Airflow Local",
+        heading_message_size="extraLarge",
+        heading_subtitle=formatted_date,
+        heading_subtitle_subtle=True,
         heading_show_logo=False,
         body_message="**lorem_ipsum** ran successfully in **localhost**",
         button_text="View logs",

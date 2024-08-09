@@ -35,6 +35,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
     :param heading_message: The title of the card
     :type heading_message: str
+    :param heading_message_size: The size of the heading_message, defaults to large. Options are default, small, medium, large, extraLarge. 
     :param heading_subtitle: The subtitle of the card, just below the heading_message
     :type heading_subtitle: str
     :param heading_subtitle_subtle: Whether the subtitle should be subtle (toned down to appear less prominent)\
@@ -54,6 +55,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     def __init__(self,
                  http_conn_id=None,
                  heading_message=None,
+                 heading_message_size="large",
                  heading_subtitle=None,
                  heading_subtitle_subtle=True,
                  heading_show_logo=True,
@@ -67,6 +69,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         self.http_conn_id = http_conn_id
 
         self.heading_message = heading_message
+        self.heading_message_size = heading_message_size
         self.heading_subtitle = heading_subtitle
         self.heading_subtitle_subtle = heading_subtitle_subtle
         self.heading_show_logo = heading_show_logo
@@ -120,7 +123,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "type": "TextBlock",
                                                         "text": self.heading_message,
                                                         "weight": "bolder",
-                                                        "size": "large",
+                                                        "size": self.heading_message_size,
                                                         "wrap": True,
                                                     },
                                                     {
