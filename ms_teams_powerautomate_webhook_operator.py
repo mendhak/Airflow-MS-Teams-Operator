@@ -24,7 +24,7 @@ import logging
 import json
 
 
-class MSTeamsWebhookOperator(HttpOperator):
+class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     """
     This operator allows you to post messages to MS Teams using the Incoming Webhooks connector.
     Takes both MS Teams webhook token directly and connection that has MS Teams webhook token.
@@ -32,46 +32,42 @@ class MSTeamsWebhookOperator(HttpOperator):
 
     :param http_conn_id: connection that has MS Teams webhook URL
     :type http_conn_id: str
-    :param webhook_token: MS Teams webhook token
-    :type webhook_token: str
-    :param message: The message you want to send on MS Teams
-    :type message: str
-    :param subtitle: The subtitle of the message to send
-    :type subtitle: str
-    :param button_text: The text of the action button
+
+    :param heading_message: The title of the card
+    :type heading_message: str
+    :param heading_subtitle: The subtitle of the card, just below the heading_message
+    :type heading_subtitle: str
+    :param body_message: The main message of the card
+    :type body_message: str
+    :param button_text: The text of the action button, defaults to View Logs
     :type button_text: str
     :param button_url: The URL for the action button click
-    :type button_url : str
-    :param theme_color: Hex code of the card theme, without the #
-    :type message: str
-    :param proxy: Proxy to use when making the webhook request
-    :type proxy: str
+    :type button_url: str
     """
 
-    template_fields = ('message', 'subtitle',)
+    template_fields = ('heading_message', 'heading_subtitle',  'body_message')
 
     @apply_defaults
     def __init__(self,
                  http_conn_id=None,
-                 webhook_token=None,
-                 message="",
-                 subtitle="",
-                 button_text="",
-                 button_url="",
-                 theme_color="00FF00",
-                 proxy=None,
+                 heading_message=None,
+                 heading_subtitle=None,
+                 body_message="",
+                 button_text="View Logs",
+                 button_url="https://example.com",
                  *args,
                  **kwargs):
 
-        super(MSTeamsWebhookOperator, self).__init__(endpoint=webhook_token, *args, **kwargs)
+        super(MSTeamsPowerAutomateWebhookOperator, self).__init__(*args, **kwargs)
         self.http_conn_id = http_conn_id
-        self.webhook_token = webhook_token
-        self.message = message
-        self.subtitle = subtitle
+
+        self.heading_message = heading_message
+        self.heading_subtitle = heading_subtitle
+        self.body_message = body_message
         self.button_text = button_text
         self.button_url = button_url
-        self.theme_color = theme_color
-        self.proxy = proxy
+
+
 
 
     def build_message(self):
@@ -114,14 +110,15 @@ class MSTeamsWebhookOperator(HttpOperator):
                                                 "items": [
                                                     {
                                                         "type": "TextBlock",
-                                                        "text": "Airflow Localhost",
+                                                        "text": self.heading_message,
                                                         "weight": "bolder",
+                                                        "size": "large",
                                                         "wrap": True,
                                                     },
                                                     {
                                                         "type": "TextBlock",
                                                         "spacing": "none",
-                                                        "text": "{{DATE(2023-09-15T08:08:15Z, SHORT)}} at {{TIME(2023-09-15T08:08:15Z)}}",
+                                                        "text": self.heading_subtitle,
                                                         "isSubtle": True,
                                                         "wrap": True,
                                                     },
@@ -136,7 +133,7 @@ class MSTeamsWebhookOperator(HttpOperator):
                                 "items": [
                                     {
                                         "type": "TextBlock",
-                                        "text": "**lorem_ipsum_dolor** ran successfully in **localhost** environment.",
+                                        "text": self.body_message,
                                         "wrap": True,
                                         "color": "default",
                                     }
@@ -146,8 +143,8 @@ class MSTeamsWebhookOperator(HttpOperator):
                         "actions": [
                             {
                                 "type": "Action.OpenUrl",
-                                "title": "View Logs",
-                                "url": "https://example.com",
+                                "title": self.button_text,
+                                "url": self.button_url
                             }
                         ],
                     },

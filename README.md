@@ -3,7 +3,7 @@ Airflow operator that can send messages to MS Teams
 
 Example:
 
-    op1 = MSTeamsWebhookOperator(task_id='msteamtest',
+    op1 = MSTeamsPowerAutomateWebhookOperator(task_id='msteamtest',
         http_conn_id='msteams_webhook_url',
         message = "Hello from Airflow!",
         subtitle = "This is the **subtitle**",

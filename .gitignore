@@ -3,4 +3,3 @@ logs/
 plugins/
 config/
 dags/*
-!dags/sample_dag.py
