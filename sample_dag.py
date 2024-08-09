@@ -29,11 +29,11 @@ def sample_dag():
         task_id="send_to_teams",
         http_conn_id="msteams_webhook_url",
         heading_title="Airflow local",
-        heading_title_size="extraLarge",
         header_bar_style="good",
         heading_subtitle=formatted_date,
-        card_width_full=True,
+        card_width_full=False,
         body_message="""Dag **lorem_ipsum** has completed successfully in **localhost**""",
+        body_facts_dict={"Lorems": "184", "Dolor": "Sat", "Time taken": "2h 30m"},
         button_text="View logs",
     )
 

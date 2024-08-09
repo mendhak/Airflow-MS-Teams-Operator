@@ -50,6 +50,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :param body_message: The main message of the card
     :type body_message: str
     :param body_message_color_type: The color 'type' of the body message: `default`, `dark`, `light`, `accent`, `good`, `warning`, `attention`. 
+    :param body_facts_dict: The dictionary of facts to show in the card
+    :type body_facts_dict: dict
     :param button_text: The text of the action button
     :type button_text: str
     :param button_url: The URL for the action button click
@@ -75,6 +77,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         heading_show_logo=True,
         body_message="",
         body_message_color_type="default",
+        body_facts_dict=None,
         button_text=None,
         button_url="https://example.com",
         button_style="default",
@@ -98,6 +101,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
         self.body_message = body_message
         self.body_message_color_type = body_message_color_type
+        self.body_facts_dict = body_facts_dict
 
         self.button_text = button_text
         self.button_url = button_url
@@ -176,6 +180,28 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                         "text": self.body_message,
                                         "wrap": True,
                                         "color": self.body_message_color_type,
+                                    },
+                                    {
+                                        "type": "FactSet",
+                                        "isVisible": True,
+                                        "facts": [
+                                            {
+                                                "title": "Board:",
+                                                "value": "Adaptive Card"
+                                            },
+                                            {
+                                                "title": "List:",
+                                                "value": "Backlog"
+                                            },
+                                            {
+                                                "title": "Assigned to:",
+                                                "value": "Matt Hidinger"
+                                            },
+                                            {
+                                                "title": "Due date:",
+                                                "value": "Not set"
+                                            }
+                                        ]
                                     }
                                 ],
                             },
@@ -193,6 +219,12 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
             ],
         }
 
+        if self.body_facts_dict and len(self.body_facts_dict.items()) > 0:
+            logging.info("Adding facts to the card")
+            cardjson["attachments"][0]["content"]["body"][1]["items"][1]["facts"] = []
+            for key, value in self.body_facts_dict.items():
+                cardjson["attachments"][0]["content"]["body"][1]["items"][1]["facts"].append({"title": key, "value": value})
+            
 
         if self.card_width_full:
             cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
