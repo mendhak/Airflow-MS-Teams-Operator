@@ -52,6 +52,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type button_text: str
     :param button_url: The URL for the action button click
     :type button_url: str
+    :param button_show: Whether to show the action button
+    :type button_show: bool
     """
 
     template_fields = ("heading_message", "heading_subtitle", "body_message")
@@ -71,6 +73,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
         body_message_color_type="default",
         button_text="View Logs",
         button_url="https://example.com",
+        button_show=True,
         *args,
         **kwargs
     ):
@@ -88,9 +91,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
         self.body_message = body_message
         self.body_message_color_type = body_message_color_type
-        
+
         self.button_text = button_text
         self.button_url = button_url
+        self.button_show = button_show
 
     def build_message(self):
         cardjson = {
@@ -109,7 +113,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                 "isVisible": self.heading_show_header,
                                 "style": "good",
                                 "bleed": True,
-                                "minHeight": "5px",
+                                "minHeight": "15px",
                                 "spacing": "None",
                                 "items": [
                                     {
@@ -139,7 +143,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "weight": "bolder",
                                                         "size": self.heading_message_size,
                                                         "wrap": True,
-                                                        "style": "heading"
+                                                        "style": "heading",
+                                                        "isVisible": self.heading_message is not None
                                                     },
                                                     {
                                                         "type": "TextBlock",
@@ -147,6 +152,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                                         "text": self.heading_subtitle,
                                                         "isSubtle": self.heading_subtitle_subtle,
                                                         "wrap": True,
+                                                        "isVisible": self.heading_subtitle is not None
                                                     },
                                                 ],
                                             },
@@ -170,7 +176,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                             {
                                 "type": "Action.OpenUrl",
                                 "title": self.button_text,
-                                "url": self.button_url,
+                                "url": self.button_url
                             }
                         ],
                     },
@@ -181,6 +187,10 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
 
         if self.card_width_full:
             cardjson["attachments"][0]["content"]["msteams"] = {"width": "Full"}
+
+        if not self.button_show:
+            del cardjson["attachments"][0]["content"]["actions"][0]
+
 
         return json.dumps(cardjson)
 

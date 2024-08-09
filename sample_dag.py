@@ -34,6 +34,7 @@ def sample_dag():
         body_message_color_type="accent",
         button_text="View logs",
         button_url="http://localhost:8080",
+        button_show=True,
         )
 
 
