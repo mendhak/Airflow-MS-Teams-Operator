@@ -58,7 +58,13 @@ docker compose exec -it airflow-webserver airflow connections add 'msteams_webho
 docker compose logs -f httpecho
 ```
 
+### Sample card
 
+To manually post the sample card to a webhook URL,
+
+```
+curl -X POST -H 'Content-Type: application/json' --data-binary @samplecard.json  "https://prod-11.westus.logic.azure.com:443/workflows/.............."
+```
 
 ## Contribute
 
