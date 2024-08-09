@@ -37,15 +37,26 @@ docker compose up airflow-init
 docker compose up
 ```
 
-Then open http://localhost:8080 with airflow:airflow
+Then wait a bit, and open http://localhost:8080 with airflow:airflow. 
 
-To troubleshoot the requests going out, use the included httpecho container.  
-In Airflow connections, create an HTTP Connection to http://httpecho:8081. 
+To create a connection quickly, use this CLI command
 
 ```
+docker compose exec -it airflow-webserver airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "<url-goes-here-without https://>", "schema": "https", "login": "", "password": null, "port": null }'
+```
+
+Now run the sample_dag to see the operator in action. 
+
+
+To troubleshoot the requests going out, use the included httpecho container which echoes the request to output.  
+In Airflow connections, create an HTTP Connection to http://httpecho:8081 
+
+
+```
+docker compose exec -it airflow-webserver airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "httpecho:8081/a/b/c", "schema": "http", "login": "", "password": null, "port": null }'
+
 docker compose logs -f httpecho
 ```
-
 
 
 
