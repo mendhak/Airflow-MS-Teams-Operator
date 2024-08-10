@@ -1,6 +1,4 @@
 
-Airflow operator that can send messages to MS Teams. It has a few options to customize the card.
-
 This is an Airflow operator that can send cards to MS Teams via webhooks. There are various options to customize the appearance of the cards. 
 
 ## Screenshots
