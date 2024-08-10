@@ -125,7 +125,7 @@ The previous version of this operator, which worked with the old incoming webhoo
 
 Any simple feature requests, please fork and submit a PR. 
 
-## Testing this plugin locally for development
+## Testing this operator locally for development
 
 I'm using the [Airflow Docker Compose](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), with a few changes. Load examples is false and added an extra_hosts.
 
