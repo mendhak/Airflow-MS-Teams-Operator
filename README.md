@@ -18,7 +18,7 @@ This is an Airflow operator that can send cards to MS Teams via webhooks. There 
 
 Create a webhook to post to Teams. The Webhook needs to be of the PowerAutomate type, not the deprecated Incoming Webhook type. Currently this is done either through the 'workflows' app in Teams, or via [PowerAutomate](https://powerautomate.com). 
 
-Once that's ready, create an HTTP Connection in Airflow with the Webhook URL. 
+Once that's ready, [create an HTTP Connection](https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html) in Airflow with the Webhook URL. 
 
 * Conn Type: HTTP
 * Host: The URL without the https://
