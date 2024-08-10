@@ -25,24 +25,24 @@ Results in:
 ## Parameters
 
 
-| Parameter               | Values                                                               | Notes                                                                                        |
-| ----------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| http_conn_id            | The connection ID, eg "msteams_webhook_url"                          |                                                                                              |
-| card_width_full         | True/False. Default is True                                          | If false, the card will be the MSTeams default.                                              |
-| header_bar_show         | True/False. Default is True                                          | If false, heading title, subtitle, logo won't be shown.                                      |
-| header_bar_style        | `default`, `emphasis`, `good`, `attention`, `warning`, `accent`      | Default is `default` ([docs - style](https://adaptivecards.io/explorer/Container.html))      |
-| heading_title           |                                                                      | If not set, header bar won't be shown                                                        |
-| heading_title_size      | `default`, `small`, `medium`, `large`, `extraLarge`                  | Default is `default` ([docs - size](https://adaptivecards.io/explorer/TextBlock.html))       |
-| heading_subtitle        |                                                                      | Appears just below the title                                                                 |
-| heading_subtitle_subtle | True/False. Default is True                                          | Subtle means toned down to appear less prominent                                             |
-| heading_show_logo       | True/False. Default is True                                          |                                                                                              |
-| body_message            |                                                                      | [Limited Markdown support](https://aka.ms/ACTextFeatures), no `monospace`                    |
-| body_message_color_type | `default`, `dark`, `light`, `accent`, `good`, `warning`, `attention` | Default is `default` ([docs - color](https://adaptivecards.io/explorer/TextBlock.html))      |
-| body_facts_dict         | Example: {'aaa':'bbb','ccc':'ddd'}                                   | The key value pairs show up as facts in the card                                             |
-| button_text             | Example: "View Logs"                                                 | If not set, button won't be shown                                                            |
-| button_url              | Example: "https://example.com"                                       | Usually you'd build the URL to the Airflow log                                               |
-| button_style            | `default`, `positive`, `destructive`                                 | Default is `default` ([docs - style](https://adaptivecards.io/explorer/Action.OpenUrl.html)) |
-| button_show             | True/False. Default is True                                          |                                                                                              |
+| Parameter               | Values                                                               | Notes                                                                     |
+| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| http_conn_id            | The connection ID, eg "msteams_webhook_url"                          |                                                                           |
+| card_width_full         | True(default) or False                                               | If false, the card will be the MSTeams default.                           |
+| header_bar_show         | True(default) or False                                               | If false, heading title, subtitle, logo won't be shown.                   |
+| header_bar_style        | `default`, `emphasis`, `good`, `attention`, `warning`, `accent`      | [docs - style](https://adaptivecards.io/explorer/Container.html)          |
+| heading_title           |                                                                      | If not set, header bar won't be shown                                     |
+| heading_title_size      | `default`, `small`, `medium`, `large`, `extraLarge`                  | [docs - size](https://adaptivecards.io/explorer/TextBlock.html)           |
+| heading_subtitle        |                                                                      | Appears just below the title                                              |
+| heading_subtitle_subtle | True(default) or False                                               | Subtle means toned down to appear less prominent                          |
+| heading_show_logo       | True(default) or False                                               |                                                                           |
+| body_message            |                                                                      | [Limited Markdown support](https://aka.ms/ACTextFeatures), no `monospace` |
+| body_message_color_type | `default`, `dark`, `light`, `accent`, `good`, `warning`, `attention` | [docs - color](https://adaptivecards.io/explorer/TextBlock.html)          |
+| body_facts_dict         | Example: {'aaa':'bbb','ccc':'ddd'}                                   | The key value pairs show up as facts in the card                          |
+| button_text             | Example: "View Logs"                                                 | If not set, button won't be shown                                         |
+| button_url              | Example: "https://example.com"                                       | For example, the URL to the Airflow log                                   |
+| button_style            | `default`, `positive`, `destructive`                                 | [docs - style](https://adaptivecards.io/explorer/Action.OpenUrl.html)     |
+| button_show             | True(default) or False                                               |                                                                           |
 
 
 
