@@ -18,7 +18,7 @@ This is an Airflow operator that can send cards to MS Teams via webhooks. There 
 
 ## Setup
 
-You will need a webhook of course. The Webhook needs to be of the PowerAutomate type, not the Incoming Webhook type. Currently this is done either through the 'workflows' app in Teams, or via [PowerAutomate](https://powerautomate.com). 
+Create a webhook to post to Teams. The Webhook needs to be of the PowerAutomate type, not the deprecated Incoming Webhook type. Currently this is done either through the 'workflows' app in Teams, or via [PowerAutomate](https://powerautomate.com). 
 
 Once that's ready, create an HTTP Connection in Airflow with the Webhook URL. 
 
@@ -165,6 +165,12 @@ curl -X POST -H 'Content-Type: application/json' --data-binary @samplecard.json 
 ## Contribute
 
 Any simple feature requests, please fork and submit a PR. 
+
+## The old incoming webhooks
+
+This operator is for the new PowerAutomate webhooks. The old incoming webhooks were deprecated in this [Teams announcement](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/). It says they'll keep working until December 2025 but I expect much degradation in the service before then.  
+
+The previous version of this operator that worked with the old incoming webhooks is in [the master-old-connectors branch](https://github.com/mendhak/Airflow-MS-Teams-Operator/tree/master-old-connectors). This operator is not a drop-in replacement for the old one, as there are too many differences.
 
 
 ## License
