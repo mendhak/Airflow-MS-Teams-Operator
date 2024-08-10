@@ -1,29 +1,97 @@
 
 Airflow operator that can send messages to MS Teams. It has a few options to customize the card.
 
-Example:
+This is an Airflow operator that can send cards to MS Teams via webhooks. There are various options to customize the appearance of the cards. 
 
-    op1 = MSTeamsPowerAutomateWebhookOperator(
+## Screenshots
+
+
+
+| Header, subtitle, and body                                       | Header, subtitle, body, facts, and a button                                |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| ![Card with a header, subtitle, and body](./screenshots/001.png) | ![Card with a header, subtitle, body, and a button](./screenshots/004.png) |
+
+ | Body with coloured text and coloured button                           | Coloured header, body, button, in dark mode                  |
+ | --------------------------------------------------------------------- | ------------------------------------------------------------ |
+ | ![Body with coloured text and coloured button](./screenshots/002.png) | ![Header, body, button, in dark mode](./screenshots/003.png) |
+
+
+## Setup
+
+You will need a webhook of course. The Webhook needs to be of the PowerAutomate type, not the Incoming Webhook type. Currently this is done either through the 'workflows' app in Teams, or via [PowerAutomate](https://powerautomate.com). 
+
+Once that's ready, create an HTTP Connection in Airflow with the Webhook URL. 
+
+* Conn Type: HTTP
+* Host: The URL without the https://
+* Schema: https
+
+Finally, copy the [ms_teams_power_automate_webhook_operator.py](./ms_teams_powerautomate_webhook_operator.py) file into your Airflow dags folder and `import` it in your DAG code.
+
+## Usage
+
+The usage can be very basic from just a message, to a full card with header, subtitle, body, facts, and a button. There are some style options too. 
+
+A very basic message:
+
+```python
+ op1 = MSTeamsPowerAutomateWebhookOperator(
+        task_id="send_to_teams",
+        http_conn_id="msteams_webhook_url",
+        body_message="DAG **lorem_ipsum** has completed successfully in **localhost**",
+    )
+```
+
+Add a button:
+    
+```python
+op1 = MSTeamsPowerAutomateWebhookOperator(
+        task_id="send_to_teams",
+        http_conn_id="msteams_webhook_url",
+        body_message="DAG **lorem_ipsum** has completed successfully in **localhost**",
+        button_text="View Logs",
+        button_url="https://example.com",
+    )
+```
+
+Add a heading and subtitle:
+
+```python
+op1 = MSTeamsPowerAutomateWebhookOperator(
+        task_id="send_to_teams",
+        http_conn_id="msteams_webhook_url",
+        heading_title="DAG **lorem_ipsum** has completed successfully",
+        heading_subtitle="In **localhost**",
+        body_message="DAG **lorem_ipsum** has completed successfully in **localhost**",
+        button_text="View Logs",
+        button_url="https://example.com",
+    )
+```
+
+Add some colouring — header bar colour, subtle subtitle, body text colour, button colour:
+
+```python
+op1 = MSTeamsPowerAutomateWebhookOperator(
         task_id="send_to_teams",
         http_conn_id="msteams_webhook_url",
         header_bar_style="good",
-        heading_title="Message from Airflow Staging",
-        heading_subtitle="Everything went better than expected",
+        heading_title="DAG **lorem_ipsum** has completed successfully",
+        heading_subtitle="In **localhost**",
+        heading_subtitle_subtle=False,
         body_message="DAG **lorem_ipsum** has completed successfully in **localhost**",
-        body_message_color_type="positive",
-        button_text="View logs",
+        body_message_color_type="good",
+        button_text="View Logs",
         button_url="https://example.com",
+        button_style="positive",
     )
+```
 
-
-Results in:
-
-![example](example.png)        
-
+You can also look at [sample_dag.py](./sample_dag.py) for an example of how to use this operator in a DAG.
 
 
 ## Parameters
 
+Here are all the parameters that can be set.
 
 | Parameter               | Values                                                               | Notes                                                                     |
 | ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -43,8 +111,6 @@ Results in:
 | button_url              | Example: "https://example.com"                                       | For example, the URL to the Airflow log                                   |
 | button_style            | `default`, `positive`, `destructive`                                 | [docs - style](https://adaptivecards.io/explorer/Action.OpenUrl.html)     |
 | button_show             | True(default) or False                                               |                                                                           |
-
-
 
 
 
@@ -76,6 +142,7 @@ docker compose exec -it airflow-webserver airflow connections add 'msteams_webho
 
 Now run the sample_dag to see the operator in action. 
 
+### Echoing requests
 
 To troubleshoot the requests going out, use the included httpecho container which echoes the request to output.  
 In Airflow connections, create an HTTP Connection to http://httpecho:8081 
@@ -87,9 +154,9 @@ docker compose exec -it airflow-webserver airflow connections add 'msteams_webho
 docker compose logs -f httpecho
 ```
 
-### Sample card
+### Posting a card with curl
 
-To manually post the sample card to a webhook URL,
+To manually post the sample card to a webhook URL, just for testing, use the included samplecard.json file.
 
 ```
 curl -X POST -H 'Content-Type: application/json' --data-binary @samplecard.json  "https://prod-11.westus.logic.azure.com:443/workflows/.............."
@@ -97,13 +164,8 @@ curl -X POST -H 'Content-Type: application/json' --data-binary @samplecard.json 
 
 ## Contribute
 
-Any feature requests, please fork and submit a PR. 
+Any simple feature requests, please fork and submit a PR. 
 
-### Wishlist
-
-Ability to create potentialActions as seen here:
-
-https://docs.microsoft.com/en-us/outlook/actionable-messages/actionable-messages-via-connectors
 
 ## License
 
