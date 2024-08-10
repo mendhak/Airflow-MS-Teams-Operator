@@ -114,10 +114,16 @@ Here are all the parameters that can be set.
 
 
 
-## Usage and Setup (Airflow, MS Teams)
 
-For setup and usage instructions see [the writeup here](https://code.mendhak.com/Airflow-MS-Teams-Operator/)
+## The old incoming webhooks
 
+This operator only works with the new PowerAutomate webhooks. The old incoming webhooks were deprecated in this [Teams announcement](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/). It says they'll keep working until December 2025 but I expect much degradation in the service before then.  
+
+The previous version of this operator that worked with the old incoming webhooks is in [the master-old-connectors branch](https://github.com/mendhak/Airflow-MS-Teams-Operator/tree/master-old-connectors). This operator is not a drop-in replacement for the old one, as there are too many differences.
+
+## Contribute
+
+Any simple feature requests, please fork and submit a PR. 
 
 ## Testing this plugin locally for development
 
@@ -161,16 +167,6 @@ To manually post the sample card to a webhook URL, just for testing, use the inc
 ```
 curl -X POST -H 'Content-Type: application/json' --data-binary @samplecard.json  "https://prod-11.westus.logic.azure.com:443/workflows/.............."
 ```
-
-## Contribute
-
-Any simple feature requests, please fork and submit a PR. 
-
-## The old incoming webhooks
-
-This operator is for the new PowerAutomate webhooks. The old incoming webhooks were deprecated in this [Teams announcement](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/). It says they'll keep working until December 2025 but I expect much degradation in the service before then.  
-
-The previous version of this operator that worked with the old incoming webhooks is in [the master-old-connectors branch](https://github.com/mendhak/Airflow-MS-Teams-Operator/tree/master-old-connectors). This operator is not a drop-in replacement for the old one, as there are too many differences.
 
 
 ## License
