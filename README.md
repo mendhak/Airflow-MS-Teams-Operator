@@ -26,11 +26,11 @@ Once that's ready, create an HTTP Connection in Airflow with the Webhook URL.
 * Host: The URL without the https://
 * Schema: https
 
-Finally, copy the [ms_teams_power_automate_webhook_operator.py](./ms_teams_powerautomate_webhook_operator.py) file into your Airflow dags folder and `import` it in your DAG code.
+Copy the [ms_teams_power_automate_webhook_operator.py](./ms_teams_powerautomate_webhook_operator.py) file into your Airflow dags folder and `import` it in your DAG code.
 
 ## Usage
 
-The usage can be very basic from just a message, to a full card with header, subtitle, body, facts, and a button. There are some style options too. 
+The usage can be very basic from just a message, to [several parameters](#parameters) including a full card with header, subtitle, body, facts, and a button. There are some style options too.
 
 A very basic message:
 
@@ -119,7 +119,7 @@ Here are all the parameters that can be set.
 
 This operator only works with the new PowerAutomate webhooks. The old incoming webhooks were deprecated in this [Teams announcement](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/). It says they'll keep working until December 2025 but I expect much degradation in the service before then.  
 
-The previous version of this operator that worked with the old incoming webhooks is in [the master-old-connectors branch](https://github.com/mendhak/Airflow-MS-Teams-Operator/tree/master-old-connectors). This operator is not a drop-in replacement for the old one, as there are too many differences.
+The previous version of this operator, which worked with the old incoming webhooks, is in [the master-old-connectors branch](https://github.com/mendhak/Airflow-MS-Teams-Operator/tree/master-old-connectors). This operator is not a drop-in replacement for the old one, as there are too many differences.
 
 ## Contribute
 
@@ -127,7 +127,7 @@ Any simple feature requests, please fork and submit a PR.
 
 ## Testing this plugin locally for development
 
-I've taken the docker compose yml from [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), with a few changes. Load examples is false and added an extra_hosts.
+I'm using the [Airflow Docker Compose](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html), with a few changes. Load examples is false and added an extra_hosts.
 
 Run this to prepare the environment:
 
@@ -140,7 +140,7 @@ docker compose up
 
 Then wait a bit, and open http://localhost:8080 with airflow:airflow. 
 
-To create a connection quickly, use this CLI command
+To create a connection quickly, use this CLI command, substitute the url bit.
 
 ```
 docker compose exec -it airflow-webserver airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "<url-goes-here-without https://>", "schema": "https", "login": "", "password": null, "port": null }'
@@ -159,6 +159,8 @@ docker compose exec -it airflow-webserver airflow connections add 'msteams_webho
 
 docker compose logs -f httpecho
 ```
+
+Now when you run the sample_dag, you can see the request reflected in the httpecho container.
 
 ### Posting a card with curl
 
