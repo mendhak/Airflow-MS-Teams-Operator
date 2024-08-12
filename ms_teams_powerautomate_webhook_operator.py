@@ -122,7 +122,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                         "body": [
                             {
                                 "type": "Container",
-                                "isVisible": self.header_bar_show and self.heading_title is not None,
+                                "isVisible": self.header_bar_show,
                                 "style": self.header_bar_style,
                                 "bleed": True,
                                 "minHeight": "15px",
@@ -185,22 +185,7 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
                                         "type": "FactSet",
                                         "isVisible": True,
                                         "facts": [
-                                            {
-                                                "title": "Board:",
-                                                "value": "Adaptive Card"
-                                            },
-                                            {
-                                                "title": "List:",
-                                                "value": "Backlog"
-                                            },
-                                            {
-                                                "title": "Assigned to:",
-                                                "value": "Matt Hidinger"
-                                            },
-                                            {
-                                                "title": "Due date:",
-                                                "value": "Not set"
-                                            }
+                                          
                                         ]
                                     }
                                 ],
