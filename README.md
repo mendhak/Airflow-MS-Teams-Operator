@@ -13,7 +13,7 @@ This is an Airflow operator that can send cards to MS Teams via webhooks. There 
 | --------------------------------------------------------------------- | ------------------------------------------------------------ |
 | ![Body with coloured text and coloured button](./screenshots/002.png) | ![Header, body, button, in dark mode](./screenshots/003.png) |
 
-| Body with empty green header                           | Body and coloured header, without logo                  |
+| Body and empty green header                            | Body and coloured header, without logo                  |
 | ------------------------------------------------------ | ------------------------------------------------------- |
 | ![Body with empty green header](./screenshots/005.png) | ![Body and header, without logo](./screenshots/006.png) |
 
