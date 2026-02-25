@@ -1,6 +1,6 @@
 import pendulum
-
-from airflow.decorators import dag, task
+import logging
+from airflow.sdk import dag, task
 
 from ms_teams_powerautomate_webhook_operator import MSTeamsPowerAutomateWebhookOperator
 
@@ -14,8 +14,10 @@ from ms_teams_powerautomate_webhook_operator import MSTeamsPowerAutomateWebhookO
 def sample_dag():
 
     @task()
-    def get_formatted_date(**kwargs):
-        iso8601date = kwargs["execution_date"].strftime("%Y-%m-%dT%H:%M:%SZ")
+    def get_formatted_date(**context):
+        
+        logging.info(f"Context: {context}")
+        iso8601date = pendulum.now().to_iso8601_string()
         # Teams date/time formatting: https://learn.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features#datetime-example 
         formatted_date = (
             f"{{{{DATE({iso8601date}, SHORT)}}}} at {{{{TIME({iso8601date})}}}}"
