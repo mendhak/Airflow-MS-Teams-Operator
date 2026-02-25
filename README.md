@@ -136,6 +136,7 @@ Run this to prepare the environment:
 ```
 mkdir -p ./dags ./logs ./plugins ./config
 echo -e "AIRFLOW_UID=$(id -u)" > .env
+docker compose run airflow-cli airflow config list
 docker compose up airflow-init
 docker compose up
 ```
@@ -145,7 +146,7 @@ Then wait a bit, and open http://localhost:8080 with airflow:airflow.
 To create a connection quickly, use this CLI command, substitute the url bit.
 
 ```
-docker compose exec -it airflow-webserver airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "<url-goes-here-without https://>", "schema": "https", "login": "", "password": null, "port": null }'
+docker compose run airflow-worker airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "<url-goes-here-without https://>", "schema": "https", "login": "", "password": null, "port": null }'
 ```
 
 Now run the sample_dag to see the operator in action. 
@@ -157,7 +158,7 @@ In Airflow connections, create an HTTP Connection to http://httpecho:8081
 
 
 ```
-docker compose exec -it airflow-webserver airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "httpecho:8081/a/b/c", "schema": "http", "login": "", "password": null, "port": null }'
+docker compose run airflow-worker airflow connections add 'msteams_webhook_url' --conn-json '{"conn_type": "http", "description": "", "host": "httpecho:8081/a/b/c", "schema": "http", "login": "", "password": null, "port": null }'
 
 docker compose logs -f httpecho
 ```

@@ -17,9 +17,10 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from collections.abc import Sequence
+
 from airflow.providers.http.hooks.http import HttpHook
 from airflow.providers.http.operators.http import HttpOperator
-from airflow.utils.decorators import apply_defaults
 import logging
 import json
 
@@ -61,9 +62,8 @@ class MSTeamsPowerAutomateWebhookOperator(HttpOperator):
     :type button_show: bool
     """
 
-    template_fields = ("heading_title", "heading_subtitle", "body_message")
+    template_fields: Sequence[str] = ("heading_title", "heading_subtitle", "body_message")
 
-    @apply_defaults
     def __init__(
         self,
         http_conn_id=None,
